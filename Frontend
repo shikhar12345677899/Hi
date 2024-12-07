@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Bot</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #response { margin-top: 20px; padding: 10px; border: 1px solid #ddd; display: inline-block; max-width: 600px; }
+    </style>
+</head>
+<body>
+    <h1>Medical Assistant Bot</h1>
+    <p>Describe your symptoms, and I’ll try to help!</p>
+    <input type="text" id="symptoms" placeholder="Enter symptoms..." style="width: 300px; padding: 10px;" />
+    <button onclick="getResponse()">Get Help</button>
+    <div id="response"></div>
+
+    <script>
+        async function getResponse() {
+            const symptoms = document.getElementById('symptoms').value;
+            const responseBox = document.getElementById('response');
+
+            if (!symptoms.trim()) {
+                responseBox.innerHTML = "Please enter symptoms!";
+                return;
+            }
+
+            responseBox.innerHTML = "Thinking...";
+
+            // Call the backend API
+            const response = await fetch('https://cfe8e946-0d65-4539-ae5f-09b3eb18ef3c-00-8n04l3eda92w.sisko.replit.dev:5000/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ symptoms }),
+            });
+
+            const data = await response.json();
+            responseBox.innerHTML = data.reply || "Couldn't find any information.";
+        }
+    </script>
+</body>
+</html>
